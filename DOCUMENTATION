@@ -1,0 +1,120 @@
+Chicago Quant Alley - Crypto Trading Simulator and Strategy Optimizer
+
+1. Project Overview
+
+This project is a modular, event-driven backtesting simulator designed to evaluate options trading strategies in a cryptocurrency setting. The strategy implemented for this simulator is a short straddle, where both call and put options at or near-the-money are sold simultaneously. The simulator uses historical BTC and option price data to simulate trade execution and evaluates profitability based on price movements.
+
+2. Project Structure
+
+QuantSimulator/
+├── Simulator.py              # Main simulation engine
+├── Strategy.py               # Short straddle logic
+├── config.py                 # Configuration for date and symbols
+├── utils/
+│   └── getStrikes.py         # Dynamic strike selection utility
+├── stats/
+│   └── printStats.py         # Analytics and plotting
+├── data/
+│   └── 20240601/             # Historical price data (BTC + Options)
+├── output/
+│   ├── trade_log.csv         # Saved trade log
+│   ├── pnl_plot.png          # PnL plot
+│   └── drawdown_plot.png     # Drawdown plot
+
+3. Strategy Logic (Strategy.py)
+
+Entry Time: 1 PM (13:00)
+
+Instruments: Sell 0.1 lot of both call and put at closest ATM strike.
+
+Exit Conditions:
+
+If underlying moves >1% from entry price
+
+OR if total PnL ≥ +500 or ≤ -500 INR
+
+Trade Log: Each trade includes symbol, side, price, quantity, PnL, and timestamp
+
+Dynamic Strike Selection: Implemented via get_closest_strikes() to find nearest matching strike from available symbol list based on spot price.
+
+4. Simulator & Trade Execution (Simulator.py)
+
+Loads all CSV data under data/YYYYMMDD/
+
+Feeds every row of market data into the strategy
+
+Simulates slippage (0.01%) and trade execution
+
+Logs all buy/sell orders and quantities
+
+Final PnL includes both realized and unrealized profits
+
+After simulation, trade log is exported to CSV.
+
+5. Analytics and Visualization (printStats.py)
+
+Loads output/trade_log.csv
+
+Converts it into a PnL time series
+
+Computes metrics:
+
+Mean & Median PnL
+
+Sharpe Ratio
+
+Max Drawdown
+
+Value-at-Risk (95%)
+
+Expected Shortfall (95%)
+
+Generates plots:
+
+pnl_plot.png: PnL over time
+
+drawdown_plot.png: Drawdown curve
+
+6. Sample Results
+
+Entered straddle at 2024-06-01 13:00:00, underlying = 69000
+Exited straddle at 2024-06-01 13:00:00, underlying = 70000, PnL = -80.01
+Total P&L: -80.01
+
+Performance Metrics:
+
+Mean PnL: ₹-32.51
+
+Median PnL: ₹-25.00
+
+Std Dev: ₹39.48
+
+Sharpe Ratio: -30.98
+
+Max Drawdown: ₹-80.01
+
+VaR 95%: ₹-47.01
+
+Expected Shortfall (95%): ₹-50.01
+
+7. Takeaways & Future Work
+
+The simulator performs end-to-end trade simulation and evaluation.
+
+Results show expected losses when underlying moves strongly (as straddles lose money in high volatility).
+
+Future enhancements:
+
+Add multi-day simulation capability
+
+Introduce alternate strategies (e.g., long strangle, covered call)
+
+Allow configurable position sizing
+
+Integrate real-time charting using Plotly
+
+
+
+
+Repository: https://github.com/Ivnam9/Chicago-Quant-Alley-Crypto-Trading-Simulator-and-Strategy-Optimizer
+
